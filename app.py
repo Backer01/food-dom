@@ -8,6 +8,11 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField, validators
 import os
 
+# Импортируем модели и формы из соответствующих файлов
+from models import User
+from forms import RegistrationForm, LoginForm, RecipeForm
+
+
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
@@ -36,13 +41,6 @@ def admin_required(f):
     return decorated_function
 
 
-class User(UserMixin):
-    def __init__(self, id, username, role):
-        self.id = id
-        self.username = username
-        self.role = role
-
-
 @login_manager.user_loader
 def load_user(user_id):
     cur = mysql.connection.cursor()
@@ -52,28 +50,6 @@ def load_user(user_id):
     if user_data:
         return User(id=user_data[0], username=user_data[1], role=user_data[2])
     return None
-
-
-# Формы
-class RegistrationForm(FlaskForm):
-    username = StringField('Username', [validators.Length(min=4, max=25)])
-    password = PasswordField('Password', [
-        validators.DataRequired(),
-        validators.EqualTo('confirm', message='Passwords must match')
-    ])
-    confirm = PasswordField('Repeat Password')
-
-
-class LoginForm(FlaskForm):
-    username = StringField('Username')
-    password = PasswordField('Password')
-
-
-class RecipeForm(FlaskForm):
-    title = StringField('Название', [validators.DataRequired()])
-    description = TextAreaField('Описание')
-    ingredients = TextAreaField('Ингредиенты', [validators.DataRequired()])
-    instructions = TextAreaField('Инструкции', [validators.DataRequired()])
 
 
 def allowed_file(filename):
