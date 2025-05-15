@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Редактирование рецепта{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <h1 class="auth-title">Редактирование рецепта</h1>
+    <div class="auth-form">
+        <form action="/update_recipe/{{ recipe.id }}" method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            
+            <div class="form-group">
+                {{ form.title.label }}
+                <input type="text" name="title" class="form-control" value="{{ recipe.title }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Описание</label>
+                <textarea name="description" class="form-control" rows="4" required>{{ recipe.description }}</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="ingredients">Ингредиенты</label>
+                <textarea name="ingredients" class="form-control" rows="6" required>{{ recipe.ingredients }}</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="instructions">Инструкции</label>
+                <textarea name="instructions" class="form-control" rows="8" required>{{ recipe.instructions }}</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="image">Изображение рецепта</label>
+                <input type="file" name="image" id="image" class="form-control-file">
+                {% if recipe.image_path %}
+                <p>Текущее изображение: {{ recipe.image_path }}</p>
+                {% endif %}
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

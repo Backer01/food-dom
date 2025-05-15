@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Мои рецепты{% endblock %}
+
+{% block content %}
+<h1>Мои любимые рецепты</h1>
+{% if recipes %}
+<div class="recipe-list">
+    {% for recipe in recipes %}
+    <a href="{{ url_for('recipe', id=recipe[0]) }}" class="recipe-card">
+        {% if recipe[5] %}
+        <img src="{{ url_for('static', filename='uploads/' + recipe[5]) }}" class="recipe-thumbnail" alt="{{ recipe[1] }}">
+        {% endif %}
+        <h3>{{ recipe[1] }}</h3>
+        <p>{{ recipe[2][:100] }}...</p>
+        <small>Ингредиенты: {{ recipe[3][:50] }}...</small>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<p>Вы ещё не добавили рецепты в избранное.</p>
+{% endif %}
+{% endblock %}

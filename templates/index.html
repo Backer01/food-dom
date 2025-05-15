@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<h1>Добро пожаловать в ФудДом!</h1>
+<div class="recipe-list">
+    {% for recipe in recipes %}
+    <a href="{{ url_for('recipe', id=recipe[0]) }}" class="recipe-card">
+        {% if recipe[5] %}
+        <img src="{{ url_for('static', filename='uploads/' + recipe[5]) }}" class="recipe-thumbnail" alt="{{ recipe[1] }}">
+        {% endif %}
+        <h3>{{ recipe[1] }}</h3>
+        <p>{{ recipe[2][:100] }}...</p>
+        <small>Ингредиенты: {{ recipe[3][:50] }}...</small>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}

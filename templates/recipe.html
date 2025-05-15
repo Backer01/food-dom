@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+{% block title %}{{ recipe[1] }}{% endblock %}
+
+{% block content %}
+<div class="recipe-container">
+    <h1 class="recipe-title">{{ recipe[1] }}</h1>
+    {% if current_user.is_authenticated and current_user.role == 'admin' %}
+    <div class="recipe-actions">
+        <a href="/edit_recipe/{{ recipe[0] }}" class="btn btn-edit">✏️ Редактировать</a>
+        <button onclick="confirmDelete({{ recipe[0] }})" class="btn btn-delete">🗑️ Удалить</button>
+    </div>
+    {% endif %}
+
+    {% if recipe[5] %}
+    <div class="recipe-image">
+        <img src="{{ url_for('static', filename='uploads/' + recipe[5]) }}" alt="{{ recipe[1] }}">
+    </div>
+    {% endif %}
+    
+    <div class="card-container">
+        <div class="recipe-card-details">
+            <div class="recipe-description">
+                <h3>Описание</h3>
+                <p style="white-space: pre-line;">{{ recipe[2] }}</p>
+            </div>
+        </div>
+        
+        <div class="recipe-card-details">
+            <h3>Ингредиенты</h3>
+            <div class="recipe-content">
+                <p style="white-space: pre-line;">{{ recipe[3] }}</p>
+            </div>
+        </div>
+
+        <div class="recipe-card-details">
+            <h3>Инструкция</h3>
+            <div class="recipe-content">
+                <p style="white-space: pre-line;">{{ recipe[4] }}</p>
+            </div>
+        </div>
+    </div>
+    
+    {% if current_user.is_authenticated %}
+    <div class="like-button-container">
+        <button onclick="likeRecipe({{ recipe[0] }})" class="like-button {{ 'liked' if is_liked else '' }}">
+            {{ '❤️ Убрать из избранного' if is_liked else '🤍 Добавить в избранное' }}
+        </button>
+    </div>
+    {% endif %}
+    
+    <style>
+        .comments-section {
+            max-width: 800px;
+            margin: 3rem auto 2rem;
+            padding: 1.5rem;
+        }
+
+        .comments-section h2 {
+            font-family: 'Playfair Display', serif;
+            color: #2c3e50;
+            border-bottom: 2px solid #e67e22;
+            padding-bottom: 0.8rem;
+            margin-bottom: 2rem;
+            font-size: 1.8em;
+        }
+
+        .comment {
+            background: #fff;
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease;
+            border: 1px solid #f5f5f5;
+        }
+
+        .comment:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .comment strong {
+            color: #e67e22;
+            font-family: 'Montserrat', sans-serif;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .comment p {
+            color: #34495e;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .comment-form textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin: 1rem 0;
+            min-height: 100px;
+            font-family: 'Quicksand', sans-serif;
+            transition: border-color 0.3s ease;
+        }
+
+        .comment-form textarea:focus {
+            outline: none;
+            border-color: #e67e22;
+        }
+
+        .card-container {
+            display: block;
+            margin: 2rem 0;
+        }
+
+        .recipe-card-details {
+            background: #fff;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #eee;
+            margin-bottom: 1.5rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .recipe-card-details:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .recipe-card-details h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4em;
+            border-bottom: 2px solid #e67e22;
+            padding-bottom: 0.5rem;
+        }
+
+        .recipe-card-details p {
+            color: #34495e;
+            line-height: 1.6;
+            font-size: 1em;
+            white-space: pre-line;
+        }
+    </style>
+
+    <div class="card-container">
+        <div class="comments-section">
+        <h2>Комментарии</h2>
+        {% for comment in comments %}
+            <div class="comment">
+                <strong>{{ comment[1] }}</strong>
+                <p>{{ comment[0] }}</p>
+            </div>
+        {% endfor %}
+        
+        {% if current_user.is_authenticated %}
+        <form method="POST" action="/comment/{{ recipe[0] }}" class="comment-form">
+            <textarea name="text" placeholder="Ваш комментарий..." required 
+                    class="comment-input"></textarea>
+            <button type="submit" class="btn btn-comment">
+                <span>Отправить</span>
+                <svg viewBox="0 0 24 24" fill="currentColor" class="send-icon">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                </svg>
+            </button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+function confirmDelete(recipeId) {
+    if (confirm('Вы уверены, что хотите удалить этот рецепт? Это действие нельзя отменить.')) {
+        fetch('/delete_recipe/' + recipeId, { method: 'POST' })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = '/';
+            }
+        });
+    }
+}
+
+function likeRecipe(recipeId) {
+    fetch('/like/' + recipeId, { method: 'POST' })
+    .then(response => response.json())
+    .then(data => {
+        if (data.action === 'liked') {
+            document.querySelector(`button[onclick="likeRecipe(${recipeId})"]`).innerHTML = '❤️ Убрать из избранного';
+            document.querySelector(`button[onclick="likeRecipe(${recipeId})"]`).classList.add('liked');
+        } else {
+            document.querySelector(`button[onclick="likeRecipe(${recipeId})"]`).innerHTML = '🤍 Добавить в избранное';
+            document.querySelector(`button[onclick="likeRecipe(${recipeId})"]`).classList.remove('liked');
+        }
+    });
+}
+</script>
+{% endblock %}
