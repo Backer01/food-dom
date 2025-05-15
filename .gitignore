@@ -1,4 +1,7 @@
 .idea/
+venv/
+__pycache__/
+.gitignore
 
 static/style — копия.css
 static/style2.css
