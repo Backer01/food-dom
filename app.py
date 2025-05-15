@@ -268,17 +268,18 @@ def edit_recipe(id):
 @admin_required
 def delete_recipe(id):
     cur = mysql.connection.cursor()
-    
+
     # Сначала удаляем связанные записи (лайки и комментарии)
     cur.execute("DELETE FROM likes WHERE recipe_id = %s", (id,))
     cur.execute("DELETE FROM comments WHERE recipe_id = %s", (id,))
-    
+
     # Затем удаляем сам рецепт
     cur.execute("DELETE FROM recipes WHERE id = %s", (id,))
-    
+
     mysql.connection.commit()
     cur.close()
     return '', 200
+
 
 @app.route('/update_recipe/<int:id>', methods=['POST'])
 @login_required
