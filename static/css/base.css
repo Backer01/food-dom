@@ -89,3 +89,35 @@ h1::after {
     padding-top: 1rem;
     border-top: 1px solid #eaeaea;
 }
+
+.footer-copyright a {
+    display: inline-block;
+    margin-right: 1rem;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-copyright a:hover {
+    color: var(--primary-color);
+}
+
+.privacy-policy {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.privacy-policy h1 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.privacy-policy section {
+    margin-bottom: 20px;
+}
+
+.privacy-policy h2 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
