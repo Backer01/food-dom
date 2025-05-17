@@ -67,3 +67,23 @@
     min-height: 100px;
     resize: vertical;
 }
+
+.privacy-policy {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.privacy-policy h1 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.privacy-policy section {
+    margin-bottom: 20px;
+}
+
+.privacy-policy h2 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
