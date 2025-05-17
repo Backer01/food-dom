@@ -15,7 +15,9 @@
                 <label>Пароль:</label>
                 {{ form.password(class="form-control") }}
             </div>
-            <button type="submit" class="btn btn-primary">Войти</button>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Войти</button>
+            </div>
             <div class="auth-footer">
                 Нет аккаунта? <a href="{{ url_for('register') }}">Зарегистрируйтесь</a>
             </div>

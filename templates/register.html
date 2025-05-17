@@ -19,7 +19,9 @@
                 <label>Повторите пароль:</label>
                 {{ form.confirm(class="form-control") }}
             </div>
-            <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+            </div>
             <div class="auth-footer">
                 Уже есть аккаунт? <a href="{{ url_for('login') }}">Войдите</a>
             </div>
