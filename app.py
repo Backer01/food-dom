@@ -82,6 +82,10 @@ def allowed_file(filename):
 
 
 # Маршруты
+@app.route('/privacy')
+def privacy_policy():
+    return render_template('privacy_policy.html')
+
 @app.route('/')
 def index():
     cur = mysql.connection.cursor()
