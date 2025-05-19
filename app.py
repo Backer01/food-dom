@@ -74,6 +74,13 @@ def load_user(user_id):
 
 # Формы
 class RegistrationForm(FlaskForm):
+    """Форма регистрации нового пользователя.
+    
+    Attributes:
+        username (StringField): Поле для ввода имени пользователя (4-25 символов)
+        password (PasswordField): Поле для ввода пароля
+        confirm (PasswordField): Поле для подтверждения пароля
+    """
     username = StringField('Username', [validators.Length(min=4, max=25)])
     password = PasswordField('Password', [
         validators.DataRequired(),
@@ -83,11 +90,25 @@ class RegistrationForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
+    """Форма входа в систему.
+    
+    Attributes:
+        username (StringField): Поле для ввода имени пользователя
+        password (PasswordField): Поле для ввода пароля
+    """
     username = StringField('Username')
     password = PasswordField('Password')
 
 
 class RecipeForm(FlaskForm):
+    """Форма создания/редактирования рецепта.
+    
+    Attributes:
+        title (StringField): Название рецепта (обязательное поле)
+        description (TextAreaField): Описание рецепта
+        ingredients (TextAreaField): Список ингредиентов (обязательное поле)
+        instructions (TextAreaField): Пошаговые инструкции (обязательное поле)
+    """
     title = StringField('Название', [validators.DataRequired()])
     description = TextAreaField('Описание')
     ingredients = TextAreaField('Ингредиенты', [validators.DataRequired()])
