@@ -27,6 +27,17 @@ login_manager.login_view = 'login'
 
 # Admin decorator
 def admin_required(f):
+    """Декоратор для ограничения доступа только админам.
+
+    Проверяет аутентификацию и наличие роли 'admin' у текущего пользователя.
+    В случае ошибки возвращает HTTP 403 Forbidden.
+
+    Args:
+        f: Функция-обработчик маршрута
+
+    Returns:
+        function: Обёрнутый обработчик с проверкой прав
+    """
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated or current_user.role != 'admin':
@@ -37,6 +48,13 @@ def admin_required(f):
 
 
 class User(UserMixin):
+    """Класс пользователя для системы аутентификации.
+
+    Args:
+        id (int): Уникальный идентификатор пользователя
+        username (str): Имя пользователя
+        role (str): Роль пользователя ('user' или 'admin')
+    """
     def __init__(self, id, username, role):
         self.id = id
         self.username = username
@@ -77,8 +95,16 @@ class RecipeForm(FlaskForm):
 
 
 def allowed_file(filename):
+    """Проверяет допустимость расширения файла.
+
+    Args:
+        filename (str): Имя файла для проверки
+
+    Returns:
+        bool: True если расширение разрешено, иначе False
+    """
     return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWEDED_EXTENSIONS']
 
 
 # Маршруты
