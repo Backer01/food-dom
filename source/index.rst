@@ -1,17 +1,23 @@
 .. food-dom documentation master file, created by
    sphinx-quickstart on Mon May 19 11:16:11 2025.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
 
-food-dom documentation
-======================
+ФудДом - Документация
+=====================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
+Добро пожаловать в документацию проекта "ФудДом" - веб-приложения для просмотра рецептов.
 
+Основные модули
+---------------
+
+.. automodule:: app
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Содержание
+----------
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Основные разделы:
 
